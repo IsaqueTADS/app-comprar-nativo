@@ -1,11 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import { Text, View, Image } from "react-native";
-import { styles } from "./styles";
-import { Button } from "@/components/Button";
-import { Input } from "@/components/Input";
+import { StyleSheet } from "react-native";
 
-export function Home() {
-  return (
-   
-  );
-}
+export const styles = StyleSheet.create({
+  container: {},
+  title: {
+    fontSize: 12,
+    fontWeight: 600,
+  },
+});
