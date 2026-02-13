@@ -1,10 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Filter } from "@/components/Filter";
 import { FilterStatus } from "@/types/FilterStatus";
+
+const FILTER_STATUS: FilterStatus[] = [FilterStatus.PENDING, FilterStatus.DONE];
 
 export function Home() {
   return (
@@ -16,8 +18,14 @@ export function Home() {
       </View>
 
       <View style={styles.content}>
-        <Filter status={FilterStatus.DONE} isActive={true} />
-        <Filter status={FilterStatus.PENDING} isActive={false} />
+        <View style={styles.header}>
+          {FILTER_STATUS.map((status) => (
+            <Filter key={status} status={status} isActive={true} />
+          ))}{" "}
+          <TouchableOpacity style={styles.clearButtom}>
+            <Text style={styles.clearText}>Limpar</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
