@@ -66,11 +66,11 @@ export function Home() {
     };
 
     await itemsStorage.add(newItem);
-    await getItems();
+    await getItemsByStatus();
   }
 
-  async function getItems() {
-    const items = await itemsStorage.get();
+  async function getItemsByStatus() {
+    const items = await itemsStorage.getByStatus(filter);
     setItems(items);
     try {
     } catch (error) {
@@ -78,10 +78,9 @@ export function Home() {
       Alert.alert("Error", "Não foi possível filtrar os itens.");
     }
   }
-
   React.useEffect(() => {
-    getItems();
-  }, []);
+    getItemsByStatus();
+  }, [filter]);
 
   return (
     <View style={styles.container}>
