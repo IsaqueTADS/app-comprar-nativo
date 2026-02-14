@@ -14,6 +14,7 @@ import { Filter } from "@/components/Filter";
 import { FilterStatus } from "@/types/FilterStatus";
 import { Item } from "@/components/Item";
 import React from "react";
+import { ItemStorage, itemsStorage } from "@/storage/itemsStorage";
 
 const FILTER_STATUS: FilterStatus[] = [FilterStatus.PENDING, FilterStatus.DONE];
 const ITEMS = [
@@ -50,7 +51,7 @@ const ITEMS = [
 ];
 
 export function Home() {
-  const [items, setItems] = React.useState<any>([]);
+  const [items, setItems] = React.useState<ItemStorage[]>([]);
   const [filter, setFilter] = React.useState(FilterStatus.PENDING);
   const [description, setDescrition] = React.useState("");
 
@@ -66,6 +67,20 @@ export function Home() {
 
     setItems((prev) => [...prev, newItem]);
   }
+
+  React.useEffect(() => {
+    async function getItems() {
+      const items = await itemsStorage.get();
+      setItems(items);
+      try {
+      } catch (error) {
+        console.log(error);
+        Alert.alert("Error", "Não foi possível filtrar os itens.");
+      }
+    }
+
+    getItems();
+  }, []);
 
   return (
     <View style={styles.container}>
