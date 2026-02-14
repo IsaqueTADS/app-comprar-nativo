@@ -71,6 +71,15 @@ export function Home() {
     setDescrition("");
     setFilter(FilterStatus.PENDING);
   }
+  async function handleRemove(id: string) {
+    try {
+      await itemsStorage.remove(id);
+      await getItemsByStatus();
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Remover", "Não foi possível remover o item.");
+    }
+  }
 
   async function getItemsByStatus() {
     const items = await itemsStorage.getByStatus(filter);
@@ -81,6 +90,23 @@ export function Home() {
       Alert.alert("Error", "Não foi possível filtrar os itens.");
     }
   }
+  function handleClear() {
+    Alert.alert("Limpar", "Deseja remover todos?", [
+      { text: "Não", style: "cancel" },
+      { text: "Sim", onPress: () => onClear() },
+    ]);
+  }
+
+  async function onClear() {
+    try {
+      await itemsStorage.clear();
+      setItems([]);
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Erro", "Não foi possivel remover todos os itens.");
+    }
+  }
+
   React.useEffect(() => {
     getItemsByStatus();
   }, [filter]);
@@ -108,7 +134,9 @@ export function Home() {
             />
           ))}
           <TouchableOpacity style={styles.clearButtom}>
-            <Text style={styles.clearText}>Limpar</Text>
+            <Text style={styles.clearText} onPress={handleClear}>
+              Limpar
+            </Text>
           </TouchableOpacity>
         </View>
         <FlatList
@@ -117,7 +145,7 @@ export function Home() {
           renderItem={({ item }) => (
             <Item
               data={item}
-              onRemove={() => console.log("remove")}
+              onRemove={() => handleRemove(item.id)}
               onStatus={() => console.log("troca status")}
             />
           )}
