@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image, TouchableOpacity, ScrollView } from "react-native";
 import { styles } from "./styles";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
@@ -28,14 +28,19 @@ export function Home() {
           </TouchableOpacity>
         </View>
 
-        <Item
-          data={{
-            status: FilterStatus.DONE,
-            description: "Arroz",
-          }}
-          onRemove={() => console.log("remove")}
-          onStatus={() => console.log("troca status")}
-        />
+        <ScrollView>
+          {Array.from({ length: 100 }).map((_, index) => (
+          <Item
+            key={index}
+            data={{
+              status: FilterStatus.DONE,
+              description: "Arroz",
+            }}
+            onRemove={() => console.log("remove")}
+            onStatus={() => console.log("troca status")}
+          />
+        ))}
+        </ScrollView>
       </View>
     </View>
   );
