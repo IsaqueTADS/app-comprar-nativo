@@ -1,5 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, View, Image, TouchableOpacity, FlatList } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+} from "react-native";
 import { styles } from "./styles";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
@@ -43,8 +50,22 @@ const ITEMS = [
 ];
 
 export function Home() {
+  const [items, setItems] = React.useState<any>([]);
   const [filter, setFilter] = React.useState(FilterStatus.PENDING);
   const [description, setDescrition] = React.useState("");
+
+  function handleAdd() {
+    if (!description.trim()) {
+      return Alert.alert("Adiconar", "Informe a descrição para adicionar");
+    }
+    const newItem = {
+      id: Math.random().toString(36).substring(2),
+      description,
+      status: FilterStatus.PENDING,
+    };
+
+    setItems((prev) => [...prev, newItem]);
+  }
 
   return (
     <View style={styles.container}>
@@ -54,7 +75,7 @@ export function Home() {
           placeholder="O que você precisa comprar?"
           onChangeText={setDescrition}
         />
-        <Button title="Adicionar" />
+        <Button title="Adicionar" onPress={handleAdd} />
       </View>
 
       <View style={styles.content}>
@@ -72,7 +93,7 @@ export function Home() {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={ITEMS}
+          data={items}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Item
