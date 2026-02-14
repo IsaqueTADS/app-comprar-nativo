@@ -6,6 +6,7 @@ import { Input } from "@/components/Input";
 import { Filter } from "@/components/Filter";
 import { FilterStatus } from "@/types/FilterStatus";
 import { Item } from "@/components/Item";
+import React from "react";
 
 const FILTER_STATUS: FilterStatus[] = [FilterStatus.PENDING, FilterStatus.DONE];
 const ITEMS = [
@@ -42,6 +43,8 @@ const ITEMS = [
 ];
 
 export function Home() {
+  const [filter, setFilter] = React.useState(FilterStatus.PENDING);
+
   return (
     <View style={styles.container}>
       <Image source={require("@/assets/logo.png")} style={styles.logo} />
@@ -53,8 +56,13 @@ export function Home() {
       <View style={styles.content}>
         <View style={styles.header}>
           {FILTER_STATUS.map((status) => (
-            <Filter key={status} status={status} isActive={true} />
-          ))}{" "}
+            <Filter
+              key={status}
+              status={status}
+              isActive={status === filter}
+              onPress={() => setFilter(status)}
+            />
+          ))}
           <TouchableOpacity style={styles.clearButtom}>
             <Text style={styles.clearText}>Limpar</Text>
           </TouchableOpacity>
