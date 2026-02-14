@@ -55,7 +55,7 @@ export function Home() {
   const [filter, setFilter] = React.useState(FilterStatus.PENDING);
   const [description, setDescrition] = React.useState("");
 
-  function handleAdd() {
+  async function handleAdd() {
     if (!description.trim()) {
       return Alert.alert("Adiconar", "Informe a descrição para adicionar");
     }
@@ -65,20 +65,21 @@ export function Home() {
       status: FilterStatus.PENDING,
     };
 
-    setItems((prev) => [...prev, newItem]);
+    await itemsStorage.add(newItem);
+    await getItems();
+  }
+
+  async function getItems() {
+    const items = await itemsStorage.get();
+    setItems(items);
+    try {
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Não foi possível filtrar os itens.");
+    }
   }
 
   React.useEffect(() => {
-    async function getItems() {
-      const items = await itemsStorage.get();
-      setItems(items);
-      try {
-      } catch (error) {
-        console.log(error);
-        Alert.alert("Error", "Não foi possível filtrar os itens.");
-      }
-    }
-
     getItems();
   }, []);
 
