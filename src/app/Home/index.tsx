@@ -15,6 +15,7 @@ import { FilterStatus } from "@/types/FilterStatus";
 import { Item } from "@/components/Item";
 import React from "react";
 import { ItemStorage, itemsStorage } from "@/storage/itemsStorage";
+import { CreditsFooter } from "@/components/CreditsFooter";
 
 const FILTER_STATUS: FilterStatus[] = [FilterStatus.PENDING, FilterStatus.DONE];
 
@@ -135,6 +136,7 @@ export function Home() {
           )}
         />
       </View>
+      <CreditsFooter />
     </View>
   );
 }
